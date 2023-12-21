@@ -42,7 +42,7 @@ void render(Scene &scene)
 
     for (Circle &circle : scene.circles)
     {
-        // setShaderUniform(scene.shader, "uMaterial.diffuse", circle.color);
+        setShaderUniform(scene.shader, "uMaterial.diffuse", circle.color);
         setShaderUniform(scene.shader, "spherePos", Vector3D(circle.x, circle.y, 0));
 
         glDrawElements(GL_TRIANGLES, scene.circleMesh.vboSize, GL_UNSIGNED_INT, nullptr);
@@ -64,15 +64,17 @@ void sceneDraw(Scene &shader)
 
 void addCircles(std::vector<Circle> &circles, int count)
 {
-    uint8_t rangeX = 10;
-    uint8_t rangeY = 10;
+    float range_xMin = -1000;
+    float range_xMax = 1000;
+    float range_yMin = -1000;
+    float range_yMax = 1000;
+
     for (int i = 0; i < count; i++)
     {
-        circles.push_back(Circle(
-            (rand() % rangeX) - rangeX / 2,
-            (rand() % rangeY) - rangeY / 2,
-            1));
-    }
+        float rand_x = rand() / (float)RAND_MAX * (range_xMax - range_xMin) + range_xMin;
+        float rand_y = rand() / (float)RAND_MAX * (range_yMax - range_yMin) + range_yMin;
+        circles.push_back(Circle(rand_x, rand_y, 0));
+    }    
 }
 
 Mesh createCircleMesh()
@@ -104,7 +106,7 @@ int main()
         circles,
         mesh};
 
-    addCircles(circles, 100);
+    addCircles(circles, 1000);
 
     Time time;
     // Run

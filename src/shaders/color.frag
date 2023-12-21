@@ -13,5 +13,5 @@ uniform Material uMaterial;
 
 void main(void)
 {
-    FragColor = vec4(255.0);
+    FragColor = vec4(uMaterial.diffuse, 1.0);
 }
